@@ -5,3 +5,5 @@ public/wasm_exec.js
 expr-playground.txt
 .opencode/
 .playwright-mcp/
+expr-editor
+npm-package/

@@ -8,3 +8,14 @@ dev = "./node_modules/.bin/vite dev"
 build = "./node_modules/.bin/vite build"
 "wasm:copy-runtime" = "cp $(go env GOROOT)/misc/wasm/wasm_exec.js public/"
 "wasm:all" = { depends = ["wasm:copy-runtime", "wasm"], description = "Copy wasm_exec.js and build WASM" }
+
+server = { depends = ["wasm:all", "build"], description = "Build Go server binary embedding static assets", run = "CGO_ENABLED=0 go build -o expr-editor ." }
+
+docker = { depends = ["server"], description = "Build Docker image", run = "docker build -t expr-editor ." }
+
+npm-pkg = { depends = ["build"], description = "Prepare npm package for publishing", run = "node scripts/npm-prep.js" }
+
+clean = { description = "Remove build artifacts", run = [
+  "rm -f expr-editor",
+  "rm -rf npm-package",
+] }
