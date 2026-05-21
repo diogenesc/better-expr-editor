@@ -1,0 +1,27 @@
+name: Release (Docker)
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release-docker:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t expr-editor .
+
+      - name: Push to GitHub Container Registry
+        run: |
+          echo "${{ github.token }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          IMG=ghcr.io/${{ github.repository }}
+          docker tag expr-editor $IMG:${{ github.ref_name }}
+          docker tag expr-editor $IMG:latest
+          docker push $IMG:${{ github.ref_name }}
+          docker push $IMG:latest

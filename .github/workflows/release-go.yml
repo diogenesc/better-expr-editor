@@ -1,4 +1,4 @@
-name: Release
+name: Release (Go binaries)
 
 on:
   push:
@@ -6,12 +6,10 @@ on:
       - "v*"
 
 jobs:
-  release:
+  release-go:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      packages: write
-      id-token: write
 
     steps:
       - uses: actions/checkout@v4
@@ -23,20 +21,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "26"
-          registry-url: "https://registry.npmjs.org"
 
-      - name: Build server binary
+      - name: Build
         run: |
           GOOS=js GOARCH=wasm go build -o public/expr.wasm ./wasm
           npm ci
           npm run build
-          CGO_ENABLED=0 go build -o expr-editor .
-
-      - name: Build Docker image
-        run: docker build -t expr-editor .
-
-      - name: Prepare npm package
-        run: node scripts/npm-prep.js
 
       - name: Cross-compile platform binaries
         run: |
@@ -54,17 +44,3 @@ jobs:
             expr-editor-linux-arm64
             expr-editor-darwin-amd64
             expr-editor-darwin-arm64
-
-      - name: Push Docker image
-        run: |
-          echo "${{ github.token }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-          IMG=ghcr.io/${{ github.repository }}
-          docker tag expr-editor $IMG:${{ github.ref_name }}
-          docker tag expr-editor $IMG:latest
-          docker push $IMG:${{ github.ref_name }}
-          docker push $IMG:latest
-
-      - name: Publish npm package
-        run: |
-          cd npm-package
-          npm publish --provenance --access public
