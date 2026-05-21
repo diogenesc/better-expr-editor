@@ -22,6 +22,16 @@ docker run -p 8080:8080 ghcr.io/diogenesc/better-expr-editor
 
 Open `http://localhost:8080`.
 
+## Screenshots
+
+**Light mode**
+
+![Light mode](docs/images/screenshot.png)
+
+**Dark mode**
+
+![Dark mode](docs/images/screenshot-dark.png)
+
 ## Features
 
 - CodeMirror 6 editor with Expr syntax highlighting, bracket matching, undo/redo
