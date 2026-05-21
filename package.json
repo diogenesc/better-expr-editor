@@ -1,6 +1,6 @@
 {
   "name": "better-expr-editor",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A browser-based editor for the Expr expression language",
   "license": "MIT",
   "type": "module",
@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/expr-lang/expr-lang-editor.git"
+    "url": "git+https://github.com/diogenesc/better-expr-editor.git"
   },
   "dependencies": {
     "@codemirror/autocomplete": "^6.18.6",
