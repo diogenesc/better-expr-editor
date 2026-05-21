@@ -1,82 +1,53 @@
-# Expr Editor
+# Better Expr Editor
 
 A browser-based editor for the [Expr](https://github.com/expr-lang/expr) expression language with live evaluation, syntax formatting, and AST inspection — all running client-side via Go WASM.
 
-## Features
-
-- **Expression editing** — CodeMirror 6 with Expr syntax highlighting, bracket matching, undo/redo
-- **Live evaluation** — Run expressions against a JSON environment, see results instantly
-- **Formatting** — Auto-format expressions with pipe-aware layout, logical chain alignment, and multi-line splitting
-- **Environment editor** — JSON editor for environment variables with format-on-click
-- **AST & Bytecode** — Inspect compiled AST or disassembled bytecode
-- **Dark/light theme** — Persistent theme toggle
-- **Persistence** — Expression, environment, and theme saved to `localStorage`
-- **Offline WASM** — Entirely client-side; no server round-trip for evaluation
-
 ## Quick Start
 
-### Option 1: Go binary (any platform)
+```bash
+npx better-expr-editor
+```
 
-Download the latest binary from [GitHub Releases](https://github.com/expr-lang/expr-lang-editor/releases), then:
+Or download the [latest binary](https://github.com/diogenesc/better-expr-editor/releases):
 
 ```bash
 ./expr-editor
+```
+
+Or use Docker:
+
+```bash
+docker run -p 8080:8080 ghcr.io/diogenesc/better-expr-editor
 ```
 
 Open `http://localhost:8080`.
 
-### Option 2: Docker
+## Features
+
+- CodeMirror 6 editor with Expr syntax highlighting, bracket matching, undo/redo
+- Live expression evaluation against a JSON environment
+- Auto-formatting with pipe-aware layout and multi-line splitting
+- JSON environment editor with format-on-click
+- AST and bytecode inspection
+- Dark/light theme with persistent toggle
+- Everything saved to localStorage
+- Entirely client-side — no server round-trips
+
+## Development
 
 ```bash
-docker run -p 8080:8080 ghcr.io/expr-lang/expr-lang-editor
+npm install
+mise run wasm
+npm run dev
 ```
 
-### Option 3: npx / bunx
+Open `http://localhost:5173`.
 
 ```bash
-npx better-expr-editor
-# or
-bunx better-expr-editor
+go test ./formatter/   # Run formatter tests
 ```
 
-### Option 4: Self-build with mise
-
-```bash
-mise run server
-./expr-editor
-```
-
-Or use the Vite dev server:
-
-```bash
-mise run wasm:all
-mise run dev
-```
-
-## Project Structure
-
-```
-├── src/                  # TypeScript frontend
-│   ├── index.ts          # App entry point, UI wiring
-│   ├── editor.ts         # CodeMirror 6 setup, themes, highlighting
-│   ├── bridge.ts         # TypeScript↔Go WASM bridge
-│   ├── lang/             # Expr language support for CodeMirror
-│   └── style.css         # Application styles (light + dark)
-├── wasm/
-│   └── main.go           # Go WASM entry — eval, compile, format, disassemble
-├── formatter/
-│   ├── formatter.go      # Expr expression formatter
-│   └── formatter_test.go # Formatter tests
-├── public/
-│   ├── expr.wasm         # Compiled WASM binary
-│   └── wasm_exec.js      # Go WASM runtime
-├── _headers              # Cloudflare Pages security headers
-├── index.html            # Single-page app shell
-├── vite.config.ts        # Vite config with COOP/COEP headers
-└── mise.toml             # Task runner configuration
-```
-
-## Architecture
+## How it works
 
 ```
 ┌─────────────────────────────────────┐
@@ -88,8 +59,7 @@ mise run dev
 │  │  JSON)    │  │  exprCompile()   │ │
 │  └──────────┘  │  exprDisassemble()│ │
 │       │        └──────────────────┘ │
-│       │                ▲            │
-│       ▼                │            │
+│       ▼                ▲            │
 │  ┌────────┐      ┌─────────┐       │
 │  │ Result │      │ Env JSON│       │
 │  │ Pane   │      │ Editor  │       │
@@ -97,30 +67,10 @@ mise run dev
 └─────────────────────────────────────┘
 ```
 
-The Go WASM module (`wasm/main.go`) compiles [expr-lang/expr](https://github.com/expr-lang/expr) expressions, evaluates them against a provided environment, formats them, and disassembles bytecode — all without a backend server.
-
-## Production
-
-Deployed to Cloudflare Pages. The `_headers` file sets the required COOP/COEP headers for `SharedArrayBuffer` support (needed by Go WASM's `wasm_exec.js`).
-
-Build with `npm run build` — output goes to `dist/`.
-
-## Development
-
-```bash
-npm run dev     # Vite dev server on port 5173
-npm run build   # TypeScript check + Vite production build
-npm run preview # Preview production build locally
-```
-
-Tests (Go formatter):
-
-```bash
-go test ./formatter/
-```
+The Go WASM module compiles and evaluates Expr expressions, formats them, and disassembles bytecode — all inside your browser.
 
 ## Tech Stack
 
 - **Frontend:** TypeScript, CodeMirror 6, Vite
-- **Backend:** Go compiled to WASM (expr-lang/expr)
-- **Deployment:** Cloudflare Pages
+- **WASM:** Go (expr-lang/expr)
+- **Packaging:** npm, Docker, Go binary
