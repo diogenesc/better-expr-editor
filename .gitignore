@@ -1,0 +1,7 @@
+node_modules
+dist
+public/expr.wasm
+public/wasm_exec.js
+expr-playground.txt
+.opencode/
+.playwright-mcp/

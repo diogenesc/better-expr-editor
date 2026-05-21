@@ -1,0 +1,10 @@
+[tools]
+go = "1.26.2"
+node = "26"
+
+[tasks]
+wasm = "GOOS=js GOARCH=wasm go build -o public/expr.wasm ./wasm"
+dev = "./node_modules/.bin/vite dev"
+build = "./node_modules/.bin/vite build"
+"wasm:copy-runtime" = "cp $(go env GOROOT)/misc/wasm/wasm_exec.js public/"
+"wasm:all" = { depends = ["wasm:copy-runtime", "wasm"], description = "Copy wasm_exec.js and build WASM" }

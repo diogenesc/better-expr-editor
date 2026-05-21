@@ -1,0 +1,253 @@
+:root {
+  --bg: #f8f9fa;
+  --surface: #ffffff;
+  --border: #dee2e6;
+  --text: #212529;
+  --text-muted: #6c757d;
+  --primary: #0d6efd;
+  --primary-hover: #0b5ed7;
+  --error: #dc3545;
+  --success: #198754;
+  --toolbar-bg: #e9ecef;
+  --statusbar-bg: #e9ecef;
+  --cm-bg: #ffffff;
+  --editor-width: 60%;
+}
+
+[data-theme="dark"] {
+  --bg: #1a1a2e;
+  --surface: #16213e;
+  --border: #2a2a4a;
+  --text: #e4e4e4;
+  --text-muted: #8888aa;
+  --primary: #4ea8de;
+  --primary-hover: #5398d4;
+  --error: #ff6b6b;
+  --success: #51cf66;
+  --toolbar-bg: #0f3460;
+  --statusbar-bg: #0f3460;
+  --cm-bg: #1a1a2e;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  height: 100vh;
+  overflow: hidden;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+#toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  background: var(--toolbar-bg);
+  border-bottom: 1px solid var(--border);
+  gap: 8px;
+}
+
+#toolbar-left, #toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+button {
+  padding: 4px 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 13px;
+}
+
+button:hover {
+  background: var(--primary);
+  color: #fff;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#env-select {
+  padding: 3px 6px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 13px;
+}
+
+#btn-theme {
+  font-size: 16px;
+  padding: 2px 8px;
+}
+
+#main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+#editor-pane {
+  flex: 1;
+  min-width: 0;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+
+#editor-container {
+  flex: 7;
+  min-height: 0;
+}
+
+#editor-container .cm-editor {
+  height: 100%;
+  background: var(--cm-bg);
+}
+
+#editor-container .cm-scroller {
+  overflow: auto;
+}
+
+#editor-container .cm-content {
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+#editor-container .cm-gutters {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+}
+
+#output-pane {
+  width: var(--editor-width);
+  min-width: 300px;
+  max-width: 50%;
+  overflow-y: auto;
+  background: var(--surface);
+  padding: 12px;
+}
+
+.output-section {
+  margin-bottom: 16px;
+}
+
+.output-section h3 {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.output-section pre {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: var(--text);
+}
+
+.hidden {
+  display: none;
+}
+
+#env-editor {
+  flex: 3;
+  min-height: 0;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+}
+
+#env-editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px;
+  font-size: 11px;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+}
+
+#env-editor-header button {
+  font-size: 11px;
+  padding: 1px 6px;
+}
+
+#env-editor-container {
+  flex: 1;
+  min-height: 0;
+}
+
+#env-editor-container .cm-editor {
+  height: 100%;
+}
+
+#env-editor-container .cm-scroller {
+  overflow: auto;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 13px;
+}
+
+#result-editor-container {
+  min-height: 80px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.cm-readonly .cm-editor {
+  height: 100%;
+  min-height: 40px;
+}
+
+.cm-readonly .cm-scroller {
+  overflow: auto;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 13px;
+}
+
+#statusbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 3px 12px;
+  background: var(--statusbar-bg);
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+#status-info {
+  flex: 1;
+  text-align: right;
+}
+
+.cm-diagnostic {
+  border-left: 3px solid var(--error);
+}
+
+.cm-diagnostic-error {
+  border-left-color: var(--error);
+}
