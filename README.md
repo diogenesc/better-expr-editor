@@ -15,26 +15,42 @@ A browser-based editor for the [Expr](https://github.com/expr-lang/expr) express
 
 ## Quick Start
 
+### Option 1: Go binary (any platform)
+
+Download the latest binary from [GitHub Releases](https://github.com/expr-lang/expr-lang-editor/releases), then:
+
 ```bash
-# Install dependencies
-npm install
-
-# Build WASM (requires Go 1.26+)
-GOOS=js GOARCH=wasm go build -o public/expr.wasm ./wasm
-cp $(go env GOROOT)/misc/wasm/wasm_exec.js public/
-
-# Start dev server
-npm run dev
+./expr-editor
 ```
 
-Open `http://localhost:5173`.
+Open `http://localhost:8080`.
 
-### Using mise
+### Option 2: Docker
 
 ```bash
-mise run wasm:all   # Build WASM + copy runtime
-mise run dev        # Start dev server
-mise run build      # Production build
+docker run -p 8080:8080 ghcr.io/expr-lang/expr-lang-editor
+```
+
+### Option 3: npx / bunx
+
+```bash
+npx better-expr-editor
+# or
+bunx better-expr-editor
+```
+
+### Option 4: Self-build with mise
+
+```bash
+mise run server
+./expr-editor
+```
+
+Or use the Vite dev server:
+
+```bash
+mise run wasm:all
+mise run dev
 ```
 
 ## Project Structure
