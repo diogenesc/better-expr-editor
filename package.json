@@ -1,19 +1,26 @@
 {
-  "name": "expr-lang-editor",
-  "version": "0.1.0",
-  "private": true,
+  "name": "better-expr-editor",
+  "version": "0.1.1",
   "description": "A browser-based editor for the Expr expression language",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/expr-lang/expr-lang-editor.git"
-  },
   "type": "module",
+  "main": "server.js",
+  "bin": {
+    "better-expr-editor": "server.js"
+  },
+  "files": [
+    "dist",
+    "server.js"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "wasm": "GOOS=js GOARCH=wasm go build -o public/expr.wasm ./wasm"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/expr-lang/expr-lang-editor.git"
   },
   "dependencies": {
     "@codemirror/autocomplete": "^6.18.6",
