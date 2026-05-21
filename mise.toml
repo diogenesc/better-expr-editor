@@ -12,9 +12,4 @@ server = { depends = ["wasm", "build"], description = "Build Go server binary em
 
 docker = { depends = ["server"], description = "Build Docker image", run = "docker build -t expr-editor ." }
 
-npm-pkg = { depends = ["build"], description = "Prepare npm package for publishing", run = "node scripts/npm-prep.js" }
-
-clean = { description = "Remove build artifacts", run = [
-  "rm -f expr-editor",
-  "rm -rf npm-package",
-] }
+clean = { description = "Remove build artifacts", run = "rm -f expr-editor" }

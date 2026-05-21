@@ -29,10 +29,5 @@ jobs:
           npm ci
           npm run build
 
-      - name: Prepare npm package
-        run: node scripts/npm-prep.js
-
       - name: Publish
-        run: |
-          cd npm-package
-          npm publish
+        run: npm publish
