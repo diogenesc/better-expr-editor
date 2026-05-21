@@ -6,7 +6,7 @@ const pkg = JSON.parse(readFileSync(`${root}/package.json`, "utf-8"))
 
 pkg.name = "better-expr-editor"
 pkg.bin = { "better-expr-editor": "server.js" }
-pkg.private = false
+delete pkg.private
 pkg.main = "server.js"
 pkg.scripts = { start: "node server.js" }
 pkg.keywords = []
