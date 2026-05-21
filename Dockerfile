@@ -4,8 +4,7 @@ WORKDIR /src
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
-RUN GOOS=js GOARCH=wasm go build -o public/expr.wasm ./wasm && \
-    cp $(go env GOROOT)/misc/wasm/wasm_exec.js public/
+RUN GOOS=js GOARCH=wasm go build -o public/expr.wasm ./wasm
 
 # Stage 2: Build frontend
 FROM node:26 AS frontend-builder

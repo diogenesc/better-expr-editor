@@ -28,7 +28,6 @@ jobs:
       - name: Build server binary
         run: |
           GOOS=js GOARCH=wasm go build -o public/expr.wasm ./wasm
-          cp $(go env GOROOT)/misc/wasm/wasm_exec.js public/
           npm ci
           npm run build
           CGO_ENABLED=0 go build -o expr-editor .
