@@ -1,7 +1,9 @@
 import "./style.css"
 import { EditorView } from "@codemirror/view"
 import { createCMEditor, updateAllThemes, exprLanguage, json } from "./editor"
-import { loadWasm, onReady, formatSource, runSource } from "./bridge"
+import { exprLinter } from "./lint"
+import { loadWasm, onReady, formatSource, runSource, loadFuncDefs } from "./bridge"
+import { setExprFunctions, getExprFunctions, type ExprFunctionDef } from "./lang"
 
 const editorContainer = document.getElementById("editor-container")!
 const resultContainer = document.getElementById("result-editor-container")!
@@ -33,7 +35,7 @@ function updateStatusLength() {
 }
 
 view = createCMEditor(editorContainer, {
-  language: exprLanguage(),
+  language: [...exprLanguage(), ...exprLinter()],
   onCursorUpdate: (line, col) => {
     updateStatusLine(line, col)
     updateStatusLength()
@@ -81,7 +83,6 @@ function debounceSave() {
   saveTimer = setTimeout(saveToLS, 300)
 }
 
-// Also save before page unload
 window.addEventListener("beforeunload", saveToLS)
 
 btnEnvFormat.addEventListener("click", () => {
@@ -207,6 +208,13 @@ async function init() {
     outputLoading.classList.add("hidden")
     onReady(() => {
       setInfo("WASM loaded")
+      const wasmFuncs = loadFuncDefs()
+      if (wasmFuncs.length > 0) {
+        const nameMap = new Map<string, ExprFunctionDef>()
+        for (const f of getExprFunctions()) nameMap.set(f.name, f)
+        for (const f of wasmFuncs) nameMap.set(f.name, f)
+        setExprFunctions([...nameMap.values()])
+      }
     })
   } catch (err: any) {
     outputLoading.textContent = "Failed to load WASM: " + err.message

@@ -6,6 +6,7 @@ import { syntaxHighlighting, HighlightStyle, bracketMatching, indentOnInput } fr
 import { json } from "@codemirror/lang-json"
 import { tags } from "@lezer/highlight"
 import { exprLanguage } from "./lang"
+import { exprLinter } from "./lint"
 
 const darkTheme = EditorView.theme({
   "&": { backgroundColor: "#1a1a2e", color: "#e4e4e4" },
@@ -59,7 +60,7 @@ let _dark = false
 
 export function createCMEditor(parent: HTMLElement, opts: {
   doc?: string
-  language?: Extension
+  language?: Extension | Extension[]
   readOnly?: boolean
   lineNumbers?: boolean
   onCursorUpdate?: (line: number, col: number) => void
@@ -87,7 +88,10 @@ export function createCMEditor(parent: HTMLElement, opts: {
     }))
   }
   if (opts.lineNumbers !== false) exts.push(lineNumbers())
-  if (opts.language) exts.push(opts.language)
+  if (opts.language) {
+    if (Array.isArray(opts.language)) exts.push(...opts.language)
+    else exts.push(opts.language)
+  }
   if (opts.readOnly) {
     exts.push(EditorState.readOnly.of(true))
   } else {
@@ -132,7 +136,8 @@ export function updateAllThemes(dark: boolean) {
 }
 
 export function createEditor(parent: HTMLElement, onCursorUpdate: (line: number, col: number) => void): EditorView {
-  return createCMEditor(parent, { language: exprLanguage(), onCursorUpdate })
+  const extensions = [exprLanguage(), ...exprLinter()]
+  return createCMEditor(parent, { language: extensions, onCursorUpdate })
 }
 
 export { exprLanguage, json }
