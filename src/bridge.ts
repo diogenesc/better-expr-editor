@@ -24,7 +24,7 @@ export async function loadWasm() {
       fetch("expr.wasm"),
       go.importObject
     )
-    go.run(result.instance)
+    go.run(result.instance).catch(() => {})
     ready = true
     for (const cb of readyCallbacks) cb()
     readyCallbacks = []
@@ -73,7 +73,9 @@ export function loadFuncDefs(): ExprFunctionDef[] {
   const res = parseResponse(raw)
   if (!res.ok) return []
   try {
-    return JSON.parse(res.data!)
+    const parsed = JSON.parse(res.data!)
+    if (!Array.isArray(parsed)) return []
+    return parsed
   } catch {
     return []
   }

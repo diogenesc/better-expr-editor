@@ -145,7 +145,7 @@ func funcDefsWrapper(this js.Value, args []js.Value) any {
 		Detail    string `json:"detail,omitempty"`
 		Info      string `json:"info,omitempty"`
 	}
-	var list []defJSON
+	list := make([]defJSON, 0)
 	for _, r := range registry {
 		list = append(list, defJSON{
 			Name:      r.Name,

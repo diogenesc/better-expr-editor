@@ -1,6 +1,6 @@
 {
   "name": "better-expr-editor",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A browser-based editor for the Expr expression language",
   "license": "MIT",
   "type": "module",
