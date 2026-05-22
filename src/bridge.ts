@@ -1,3 +1,5 @@
+import type { ExprFunctionDef } from "./lang"
+
 interface RPCResponse {
   ok: boolean
   data?: string
@@ -63,4 +65,16 @@ export function disassembleSource(source: string): string {
   const res = parseResponse(raw)
   if (!res.ok) throw new Error(res.error)
   return res.data!
+}
+
+export function loadFuncDefs(): ExprFunctionDef[] {
+  if (typeof (globalThis as any).exprFuncDefs !== "function") return []
+  const raw = (globalThis as any).exprFuncDefs()
+  const res = parseResponse(raw)
+  if (!res.ok) return []
+  try {
+    return JSON.parse(res.data!)
+  } catch {
+    return []
+  }
 }
